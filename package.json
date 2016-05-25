@@ -1,0 +1,33 @@
+{
+  "name": "deepPick",
+  "version": "1.0.0",
+  "description": "pick object or array by given fields recusively.",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "chai": "^3.5.0",
+    "lodash": "^4.12.0"
+  },
+  "devDependencies": {
+    "mocha": "^2.4.5"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wbiz/deepPick"
+  },
+  "keywords": [
+    "pick",
+    "deep",
+    "deepPick",
+    "deep-pick",
+    "deep_pick",
+    "sericlise"
+  ],
+  "author": "wbiz",
+  "license": "MIT"
+}
