@@ -77,6 +77,44 @@ describe('deepPick', function () {
     done();
   });
 
+  it('should get excluded fields ', function (done) {
+    var data = [{a:[{b:[{c:1}, {d:5}], d:{e:2}}], f:{g:[{h:3}], i:4}},
+      {a:[{b:[{c:11}, {d:15}], d:{e:12}}], f:{g:[{h:13}], i:14}}
+    ];
+    var fields = ['a.b.c', 'f.g'];
+    var results = [{a:[{b:[{d:5}], d:{e:2}}], f:{i:4}},
+      {a:[{b:[{d:15}], d:{e:12}}], f:{i:14}}
+    ];
+
+    var obj = deepPick(data, fields, {keepPath: false, exclude: true});
+    expect(obj).to.eql(results);
+    done();
+  });
+
+  it('should get excluded fields 2', function (done) {
+    var data = {a:[{b:[{c:1}, {d:5}], d:{e:2}}], f:{g:[{h:3}], i:4}, j:{k:4, l:9}};
+    var fields = ['a.b.c', 'f.g.h', 'j.l'];
+    var results = {a:[{b:[{d:5}],d:{e:2}}],f:{i:4}, j:{k:4}};
+
+    var obj = deepPick(data, fields, {keepPath: false, exclude: true});
+    expect(obj).to.eql(results);
+    done();
+  });
+
+   it('should get excluded fields with keepPath', function (done) {
+    var data = [{a:[{b:[{c:1}, {d:5}], d:{e:2}}], f:{g:[{h:3}], i:4}},
+      {a:[{b:[{c:11}, {d:15}], d:{e:12}}], f:{g:[{h:13}], i:14}}
+    ];
+    var fields = ['a.b.c', 'f.g'];
+    var results = [{a:[{b:[{}, {d:5}], d:{e:2}}], f:{i:4}},
+      {a:[{b:[{}, {d:15}], d:{e:12}}], f:{i:14}}
+    ];
+
+    var obj = deepPick(data, fields, {keepPath: true, exclude: true});
+    expect(obj).to.eql(results);
+    done();
+  });
+
   it('compound test', function (done) {
     var data = {a:[{b:[{c:1}, {d:5}], d:{e:2}}], f:{g:[{h:3}], i:4}};
     var fields = ['a.b.dd', 'f.g.f'];
@@ -86,12 +124,12 @@ describe('deepPick', function () {
     expect(obj).to.eql(results);
     
     fields = ['a.b.d', 'f.g.f'];
-    results = {a:[{b:[{},{d:5}]}], f:{g:[{}]}}
+    results = {a:[{b:[{},{d:5}]}], f:{g:[{}]}};
     obj = deepPick(data, fields);
     expect(obj).to.eql(results);
 
-    results = {a:[{b:[{d:5}]}]}
-    var obj = deepPick(data, fields, {keepPath: false});
+    results = {a:[{b:[{d:5}]}]};
+    obj = deepPick(data, fields, {keepPath: false});
     expect(obj).to.eql(results);
     done();
   });

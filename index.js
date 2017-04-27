@@ -2,7 +2,11 @@ var _ = require('lodash');
 
 var processObj = function(data, objectFields, propFields, options){
   var keepPath = (options && _.has(options, 'keepPath')) ? options.keepPath: true;
-  var item = (propFields.length>0) ? _.pick(data, propFields) : {};
+  var exclude = (options && _.has(options, 'exclude')) ? options.exclude: false;
+  var item = {};
+  if(propFields.length > 0 || exclude) {
+    item = (!exclude) ? _.pick(data, propFields) : _.omit(data, propFields);
+  }
   if (objectFields.length > 0) {
     var map = {};
     _.forEach(objectFields, function (f) {
@@ -20,6 +24,8 @@ var processObj = function(data, objectFields, propFields, options){
         var returned = pickData(data[obj], prop, options);
         if (keepPath || !_.isEmpty(returned)){
           item[obj] = returned;
+        } else if(exclude){
+          delete item[obj];
         }
       } else {
         item[obj] = data[obj]
